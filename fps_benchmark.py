@@ -32,13 +32,13 @@ while True:
     print("Frame time: ", frame_time)
     print("Avg Frame Time: ", round(total_time / samples, 5))
     # plotting
-    for obj in objs:
-        # print(obj)
-        label = obj['label']
-        score = obj['score']
-        [(xmin, ymin), (xmax, ymax)] = obj['bbox']
-        frame = cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), RED_COLOR, 2)
-        frame = cv2.putText(frame, f'{label} ({str(score)})', (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.75,
-                            RED_COLOR, 1, cv2.LINE_AA)
-    cv2.imshow("Result", frame)
-    cv2.waitKey(20)
+#    for obj in objs:
+#        # print(obj)
+#        label = obj['label']
+#        score = obj['score']
+#        [(xmin, ymin), (xmax, ymax)] = obj['bbox']
+#        frame = cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), RED_COLOR, 2)
+#        frame = cv2.putText(frame, f'{label} ({str(score)})', (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.75,
+#                            RED_COLOR, 1, cv2.LINE_AA)
+#    cv2.imshow("Result", frame)
+#    cv2.waitKey(20)
