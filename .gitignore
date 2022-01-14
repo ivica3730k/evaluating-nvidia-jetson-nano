@@ -160,3 +160,7 @@ cython_debug/
 *.part
 
 *.whl
+
+*.mp4
+
+weights/lynsyn_profile.db
