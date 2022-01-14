@@ -154,3 +154,9 @@ cython_debug/
 .idea/
 
 # weights/
+
+*.pt
+
+*.part
+
+*.whl

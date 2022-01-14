@@ -1,3 +1,5 @@
+import time
+
 import cv2
 
 from yolov5 import ObjectDetection
@@ -10,20 +12,26 @@ if not ok:
     print("Error reading camera")
     exit(1)
 print("Loading weigths!")
-Object_detector = ObjectDetection.ObjectDetection('weights/yolov5s.pt', input_width=640)
+Object_detector = ObjectDetection.ObjectDetection('weights/yolov5n.pt', input_width=640)
 print("Starting inference")
 
+samples = 0
+total_time = 0.000
 while True:
     print("Inference starting:")
     ok, frame = camera.read()
     if not ok:
         print("Error reading camera")
         exit(1)
+    t = time.process_time()
     objs = Object_detector.detect(frame)
-
+    frame_time = round(time.process_time() - t, 5)
+    samples += 1
+    total_time += frame_time
+    print("Frame time: ", frame_time)
+    print("Avg Frame Time: ", round(total_time / samples, 5))
     # plotting
     for obj in objs:
-        print(obj)
         # print(obj)
         label = obj['label']
         score = obj['score']

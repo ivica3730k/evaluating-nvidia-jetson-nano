@@ -13,9 +13,11 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 class ObjectDetection:
-    def __init__(self, model_path, input_width=320):
+    def __init__(self, model_path, input_width=320, conf_threshold=0.25, iou_thres=0.45):
         self.yolo_model = attempt_load(weights=model_path, map_location=device)
         self.input_width = input_width
+        self.conf_threshold = conf_threshold
+        self.iou_thres = iou_thres
 
     def detect(self, main_img):
         height, width = main_img.shape[:2]
@@ -30,7 +32,7 @@ class ObjectDetection:
             img = img.unsqueeze(0)
 
         pred = self.yolo_model(img, augment=False)[0]
-        pred = non_max_suppression(pred, conf_thres=0.25, iou_thres=0.45, classes=None)
+        pred = non_max_suppression(pred, conf_thres=self.conf_threshold, iou_thres=self.iou_thres, classes=None)
         items = []
 
         if pred[0] is not None and len(pred):
