@@ -9,6 +9,8 @@ print("Loading weigths!")
 Object_detector = ObjectDetection.ObjectDetection('weights/yolov5n.pt', input_width=640)
 print("Starting inference")
 frame = cv2.imread(sys.argv[1])
+frame = cv2.resize(frame, (640, 480), interpolation=cv2.INTER_AREA)
+
 samples = 0
 measuring_samples = 0
 total_time = 0.000
