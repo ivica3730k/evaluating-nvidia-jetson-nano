@@ -1,3 +1,4 @@
+import sys
 import time
 
 import cv2
@@ -6,7 +7,7 @@ from yolov5 import ObjectDetection
 
 RED_COLOR = (255, 0, 0)
 print("Configuring camera")
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(sys.argv[1])
 ok, frame = camera.read()
 if not ok:
     print("Error reading camera")

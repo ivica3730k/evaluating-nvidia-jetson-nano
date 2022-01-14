@@ -164,3 +164,5 @@ cython_debug/
 *.mp4
 
 weights/lynsyn_profile.db
+
+*.avi
