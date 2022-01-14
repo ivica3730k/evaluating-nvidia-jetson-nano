@@ -17,9 +17,10 @@ Object_detector = ObjectDetection.ObjectDetection('weights/yolov5n.pt', input_wi
 print("Starting inference")
 
 samples = 0
+measuring_samples = 0
 total_time = 0.000
 while True:
-    print("Inference starting:")
+    # print("Inference starting:")
     ok, frame = camera.read()
     if not ok:
         print("Error reading camera")
@@ -27,10 +28,12 @@ while True:
     t = time.process_time()
     objs = Object_detector.detect(frame)
     frame_time = round(time.process_time() - t, 5)
-    samples += 1
-    total_time += frame_time
     print("Frame time: ", frame_time)
-    print("Avg Frame Time: ", round(total_time / samples, 5))
+    samples += 1
+    if samples >= 60:
+        measuring_samples += 1
+        total_time += frame_time
+        print("Avg Frame Time: ", round(total_time / measuring_samples, 5))
     # plotting
 #    for obj in objs:
 #        # print(obj)
