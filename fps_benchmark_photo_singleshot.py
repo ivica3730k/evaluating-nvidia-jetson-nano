@@ -30,6 +30,8 @@ else:
     input_pin = 18  # BCM pin 18, BOARD pin 12
     GPIO.setmode(GPIO.BCM)  # BCM pin-numbering scheme from Raspberry Pi
     GPIO.setup(input_pin, GPIO.IN)  # set pin as an input pin
+    print("Waiting for next cycle")
+    time.sleep(5)
     print("Waiting for pin trigger")
     while GPIO.input(input_pin) == GPIO.HIGH:
         continue
