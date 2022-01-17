@@ -27,7 +27,7 @@ else:
     GPIO.setmode(GPIO.BCM)  # BCM pin-numbering scheme from Raspberry Pi
     GPIO.setup(input_pin, GPIO.IN)  # set pin as an input pin
     print("Waiting for pin trigger")
-    while GPIO.input(input_pin) == GPIO.low:
+    while GPIO.input(input_pin) == GPIO.LOW:
         continue
     t = time.process_time()
     objs = Object_detector.detect(frame)
