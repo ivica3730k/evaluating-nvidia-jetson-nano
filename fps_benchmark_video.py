@@ -13,7 +13,7 @@ if not ok:
     print("Error reading camera")
     exit(1)
 print("Loading weigths!")
-Object_detector = ObjectDetection.ObjectDetection('weights/yolov5n.pt', input_width=640)
+Object_detector = ObjectDetection.ObjectDetection('weights/' + sys.argv[2], input_width=640)
 print("Starting inference")
 
 samples = 0
@@ -34,14 +34,3 @@ while True:
         measuring_samples += 1
         total_time += frame_time
         print("Avg Frame Time: ", round(total_time / measuring_samples, 5))
-    # plotting
-#    for obj in objs:
-#        # print(obj)
-#        label = obj['label']
-#        score = obj['score']
-#        [(xmin, ymin), (xmax, ymax)] = obj['bbox']
-#        frame = cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), RED_COLOR, 2)
-#        frame = cv2.putText(frame, f'{label} ({str(score)})', (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.75,
-#                            RED_COLOR, 1, cv2.LINE_AA)
-#    cv2.imshow("Result", frame)
-#    cv2.waitKey(20)

@@ -11,13 +11,12 @@ except ImportError:
 from yolov5 import ObjectDetection
 
 print("Loading weigths!")
-Object_detector = ObjectDetection.ObjectDetection('weights/yolov5n.pt', input_width=640)
+Object_detector = ObjectDetection.ObjectDetection('weights/' + sys.argv[2], input_width=640)
 frame = cv2.imread(sys.argv[1])
 frame = cv2.resize(frame, (640, 480), interpolation=cv2.INTER_AREA)
 
 for i in range(0, 4):
     # Detect image few times because it is slow first few times
-    print("Pre-detect: ", i)
     objs = Object_detector.detect(frame)
 
 if not use_gpio:
