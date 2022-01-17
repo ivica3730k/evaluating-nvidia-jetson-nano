@@ -33,7 +33,9 @@ else:
     print("Waiting for pin trigger")
     while GPIO.input(input_pin) == GPIO.HIGH:
         continue
+    time.sleep(1)
     t = time.process_time()
     objs = Object_detector.detect(frame)
     frame_time = round(time.process_time() - t, 5)
+    time.sleep(1)
     print("Frame time: ", frame_time)
