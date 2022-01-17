@@ -170,3 +170,5 @@ weights/lynsyn_profile.db
 *.db
 
 *.webm
+
+*.ods#
