@@ -15,6 +15,11 @@ Object_detector = ObjectDetection.ObjectDetection('weights/yolov5n.pt', input_wi
 frame = cv2.imread(sys.argv[1])
 frame = cv2.resize(frame, (640, 480), interpolation=cv2.INTER_AREA)
 
+for i in range(0, 4):
+    # Detect image few times because it is slow first few times
+    print("Pre-detect: ", i)
+    objs = Object_detector.detect(frame)
+
 if not use_gpio:
     print("Inference in 1s")
     time.sleep(1)
