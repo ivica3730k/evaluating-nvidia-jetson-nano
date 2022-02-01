@@ -43,6 +43,7 @@ else:
     GPIO.setmode(GPIO.BCM)  # BCM pin-numbering scheme from Raspberry Pi
     GPIO.setup(input_pin, GPIO.IN)  # set pin as an input pin
     while True:
+        print("Waiting for GPIO trigger")
         while GPIO.input(input_pin) == GPIO.HIGH:
             continue
         while GPIO.input(input_pin) == GPIO.LOW:
