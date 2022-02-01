@@ -44,19 +44,17 @@ else:
     GPIO.setmode(GPIO.BCM)  # BCM pin-numbering scheme from Raspberry Pi
     GPIO.setup(input_pin, GPIO.IN)  # set pin as an input pin
     while True:
+        print("Waiting for GPIO trigger")
         while GPIO.input(input_pin) == GPIO.HIGH:
             continue
         while GPIO.input(input_pin) == GPIO.LOW:
             ok, frame = camera.read()
-            if not ok:
-                print("Error reading camera")
-                exit(1)
-                t = time.time()
-                objs = Object_detector.detect(frame)
-                frame_time = round(time.time() - t, 5)
-                print("Frame time: ", frame_time)
-                samples += 1
-                total_time += frame_time
+            t = time.time()
+            objs = Object_detector.detect(frame)
+            frame_time = round(time.time() - t, 5)
+            print("Frame time: ", frame_time)
+            samples += 1
+            total_time += frame_time
         print("Avg Frame Time: ", round(total_time / samples, 5))
         print("Total samples processed: ", samples)
         print("Average framerate:", round(samples / total_time, 2))
