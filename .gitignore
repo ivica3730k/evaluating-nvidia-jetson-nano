@@ -174,3 +174,5 @@ weights/lynsyn_profile.db
 *.ods#
 
 *.csv
+
+Coco2017_val/
