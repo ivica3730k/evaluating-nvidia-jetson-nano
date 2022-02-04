@@ -46,7 +46,7 @@ else:
     while True:
         print("Waiting for GPIO trigger")
         while GPIO.input(input_pin) == GPIO.HIGH:
-            time.sleep(0.001)
+            time.sleep(0.01)
             continue
         while GPIO.input(input_pin) == GPIO.LOW:
             if GPIO.input(input_pin) == GPIO.HIGH:
