@@ -1,7 +1,10 @@
+import os
 import sys
 import time
-
+import threading
+sys.path.append(os.path.join(os.path.dirname(__file__), "nvidia-jetson-power-measuring-tool"))
 import cv2
+from  jetsonpowerprofiler import jetsonpowerprofiler as powerprofiler
 
 use_gpio = True
 try:
@@ -18,10 +21,6 @@ if not ok:
     print("Error reading camera")
     exit(1)
 print("Loading video into ram")
-# images = []
-# for i in range(0, 1000):
-#    ok, frame = camera.read()
-#    images.append(frame)
 print("Loading weigths!")
 Object_detector = ObjectDetection.ObjectDetection(sys.argv[2], input_width=640)
 print("Starting inference")

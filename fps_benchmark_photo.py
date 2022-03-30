@@ -1,8 +1,12 @@
 import glob
+import multiprocessing
+import os
 import sys
 import time
 
+sys.path.append(os.path.join(os.path.dirname(__file__), "nvidia-jetson-power-measuring-tool"))
 import cv2
+from jetsonpowerprofiler import jetsonpowerprofiler as powerprofiler
 
 use_gpio = True
 try:
@@ -24,6 +28,8 @@ for i in range(0, 10):
     objs = Object_detector.detect(images[i])
 
 print("Starting inference")
+
+power_measuring_thread = multiprocessing.Process(target=powerprofiler.measure_continuous, args=())
 
 samples = 0
 total_time = 0.000
@@ -49,6 +55,8 @@ else:
             continue
         while GPIO.input(input_pin) == GPIO.LOW:
             for frame in images:
+                if power_measuring_thread.is_alive() is False:
+                    power_measuring_thread.start()
                 if GPIO.input(input_pin) == GPIO.HIGH:
                     break
                 t = time.time()
@@ -57,8 +65,11 @@ else:
                 print("Frame time: ", frame_time)
                 samples += 1
                 total_time += frame_time
+        power_measuring_thread.terminate()
         print("Avg Frame Time: ", round(total_time / samples, 5))
         print("Total samples processed: ", samples)
         print("Average framerate:", round(samples / total_time, 2))
+        print("Average power - software measured:", powerprofiler.get_average_power())
+        powerprofiler.clean()
         samples = 0
         total_time = 0.000

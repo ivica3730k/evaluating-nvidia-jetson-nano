@@ -1,11 +1,11 @@
 import sys
 from pathlib import Path
-
+sys.path.append(str(Path(__file__).parent.absolute()))
 import cv2
 import numpy as np
 import torch
 
-sys.path.append(str(Path(__file__).parent.absolute()))
+
 from models.experimental import attempt_load
 from utils.general import non_max_suppression
 
