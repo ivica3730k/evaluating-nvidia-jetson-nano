@@ -75,5 +75,7 @@ else:
         print("Average framerate:", round(samples / total_time, 2))
         print("Average power - software measured:", powerprofiler.get_average_power())
         powerprofiler.clean()
+        del power_measuring_thread
+        power_measuring_thread = threading.Thread(target=powerprofiler.measure_continuous, args=())
         samples = 0
         total_time = 0.000
