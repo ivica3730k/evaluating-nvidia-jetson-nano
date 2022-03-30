@@ -1,7 +1,7 @@
 import glob
-import multiprocessing
 import os
 import sys
+import threading
 import time
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "nvidia-jetson-power-measuring-tool"))
@@ -16,8 +16,12 @@ except ImportError:
 from yolov5 import ObjectDetection
 
 images = []
+i = 100
 for file in glob.glob("./Coco2017_val/*"):
     images.append(cv2.imread(file))
+    i -= 1
+    if i == 0:
+        break
 
 print("Loading weigths!")
 Object_detector = ObjectDetection.ObjectDetection(sys.argv[1], input_width=640)
@@ -29,7 +33,7 @@ for i in range(0, 10):
 
 print("Starting inference")
 
-power_measuring_thread = multiprocessing.Process(target=powerprofiler.measure_continuous, args=())
+power_measuring_thread = threading.Thread(target=powerprofiler.measure_continuous, args=())
 
 samples = 0
 total_time = 0.000
@@ -55,7 +59,7 @@ else:
             continue
         while GPIO.input(input_pin) == GPIO.LOW:
             for frame in images:
-                if power_measuring_thread.is_alive() is False:
+                if samples == 0:
                     power_measuring_thread.start()
                 if GPIO.input(input_pin) == GPIO.HIGH:
                     break
@@ -65,7 +69,7 @@ else:
                 print("Frame time: ", frame_time)
                 samples += 1
                 total_time += frame_time
-        power_measuring_thread.terminate()
+        powerprofiler.send_kill()
         print("Avg Frame Time: ", round(total_time / samples, 5))
         print("Total samples processed: ", samples)
         print("Average framerate:", round(samples / total_time, 2))
