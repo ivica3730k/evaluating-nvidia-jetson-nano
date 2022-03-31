@@ -1,3 +1,0 @@
-[submodule "nvidia-jetson-power-measuring-tool"]
-	path = nvidia-jetson-power-measuring-tool
-	url = git@github.com:ivica3730k/nvidia-jetson-power-measuring-tool.git
