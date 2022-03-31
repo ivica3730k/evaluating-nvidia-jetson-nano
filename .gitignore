@@ -176,3 +176,5 @@ weights/lynsyn_profile.db
 *.csv
 
 Coco2017_val/
+
+nvidia-jetson-power-measuring-tool/
