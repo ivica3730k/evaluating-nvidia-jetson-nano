@@ -1,10 +1,11 @@
 import os
 import sys
-import time
 import threading
+import time
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "nvidia-jetson-power-measuring-tool"))
 import cv2
-from  jetsonpowerprofiler import jetsonpowerprofiler as powerprofiler
+from jetsonpowerprofiler import jetsonpowerprofiler as powerprofiler
 
 use_gpio = True
 try:
@@ -24,6 +25,8 @@ print("Loading video into ram")
 print("Loading weigths!")
 Object_detector = ObjectDetection.ObjectDetection(sys.argv[2], input_width=640)
 print("Starting inference")
+
+power_measuring_thread = threading.Thread(target=powerprofiler.measure_continuous, args=())
 
 samples = 0
 total_time = 0.000
@@ -51,15 +54,23 @@ else:
             if GPIO.input(input_pin) == GPIO.HIGH:
                 break
             ok, frame = camera.read()
+            if samples == 0:
+                power_measuring_thread.start()
+            if GPIO.input(input_pin) == GPIO.HIGH:
+                break
             t = time.time()
             objs = Object_detector.detect(frame)
             frame_time = round(time.time() - t, 5)
-            print("Frame time: ", frame_time)
+            # print("Frame time: ", frame_time)
             samples += 1
             total_time += frame_time
+        powerprofiler.send_kill()
         print("Avg Frame Time: ", round(total_time / samples, 5))
         print("Total samples processed: ", samples)
         print("Average framerate:", round(samples / total_time, 2))
-        camera = cv2.VideoCapture(sys.argv[1])
+        print("Average power - software measured:", powerprofiler.get_average_power())
+        powerprofiler.clean()
+        del power_measuring_thread
+        power_measuring_thread = threading.Thread(target=powerprofiler.measure_continuous, args=())
         samples = 0
         total_time = 0.000

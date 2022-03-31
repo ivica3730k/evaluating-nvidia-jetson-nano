@@ -16,16 +16,11 @@ except ImportError:
 from yolov5 import ObjectDetection
 
 images = []
-i = 100
 for file in glob.glob("./Coco2017_val/*"):
     images.append(cv2.imread(file))
-    i -= 1
-    if i == 0:
-        break
 
 print("Loading weigths!")
 Object_detector = ObjectDetection.ObjectDetection(sys.argv[1], input_width=640)
-print("Starting inference - predetect")
 
 for i in range(0, 10):
     # Detect image few times because it is slow first few times
@@ -43,7 +38,7 @@ if not use_gpio:
             t = time.time()
             objs = Object_detector.detect(frame)
             frame_time = round(time.time() - t, 5)
-            # print("Frame time: ", frame_time)
+            print("Frame time: ", frame_time)
             samples += 1
             total_time += frame_time
             print("Avg Frame Time: ", round(total_time / samples, 5))
@@ -66,7 +61,7 @@ else:
                 t = time.time()
                 objs = Object_detector.detect(frame)
                 frame_time = round(time.time() - t, 5)
-                print("Frame time: ", frame_time)
+                # print("Frame time: ", frame_time)
                 samples += 1
                 total_time += frame_time
         powerprofiler.send_kill()
