@@ -11,27 +11,26 @@ sys.path.append(
                  "NvidiaJetsonNanoPowerMeasuringTool"))
 from jetsonpowerprofiler import jetsonpowerprofiler as powerprofiler
 
+sys.path.append(os.path.join(os.path.dirname(__file__), "AzureVisionTools"))
+from AzureVisionTools import AzureObjectDetectionEngine as AzureObjectDetection
+
+ENDPOINT = "https://n0781349-cv.cognitiveservices.azure.com/"
+SUBSCRIPTION_KEY = "10e1d0d7661e495b8f2bc696f74a34fa"
+AzureObjectDetection.load_credentials(ENDPOINT, SUBSCRIPTION_KEY)
+
 _use_gpio = True
 try:
     import RPi.GPIO as GPIO
 except ImportError:
     _use_gpio = False
-from yolov5 import ObjectDetection
 
 images = []
 for file in glob.glob("./Coco2017_val/*"):
     images.append(cv2.imread(file))
 
-print("Loading weigths!")
-Object_detector = ObjectDetection.ObjectDetection(sys.argv[1], input_width=640)
-
-for i in range(0, 10):
-    # Detect image few times because it is slow first few times
-    objs = Object_detector.detect(images[i])
-
 print("Starting inference")
 
-power_measuring_thread = threading.Thread(
+_power_measuring_thread = threading.Thread(
     target=powerprofiler.measure_continuous, args=())
 
 samples = 0
@@ -40,7 +39,10 @@ if not _use_gpio:
     while True:
         for frame in images:
             t = time.time()
-            objs = Object_detector.detect(frame)
+            try:
+                objs = AzureObjectDetection.inference_from_cv2_image(frame)
+            except:
+                break
             frame_time = round(time.time() - t, 5)
             print("Frame time: ", frame_time)
             samples += 1
@@ -59,13 +61,15 @@ else:
         while GPIO.input(input_pin) == GPIO.LOW:
             for frame in images:
                 if samples == 0:
-                    power_measuring_thread.start()
+                    _power_measuring_thread.start()
                 if GPIO.input(input_pin) == GPIO.HIGH:
                     break
                 t = time.time()
-                objs = Object_detector.detect(frame)
+                try:
+                    objs = AzureObjectDetection.inference_from_cv2_image(frame)
+                except:
+                    break
                 frame_time = round(time.time() - t, 5)
-                # print("Frame time: ", frame_time)
                 samples += 1
                 total_time += frame_time
         powerprofiler.send_kill()
@@ -75,8 +79,8 @@ else:
         print("Average power - software measured:",
               powerprofiler.get_average_power())
         powerprofiler.clean()
-        del power_measuring_thread
-        power_measuring_thread = threading.Thread(
+        del _power_measuring_thread
+        _power_measuring_thread = threading.Thread(
             target=powerprofiler.measure_continuous, args=())
         samples = 0
         total_time = 0.000
