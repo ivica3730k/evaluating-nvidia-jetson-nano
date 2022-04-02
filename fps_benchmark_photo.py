@@ -4,8 +4,11 @@ import sys
 import threading
 import time
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "nvidia-jetson-power-measuring-tool"))
 import cv2
+
+sys.path.append(
+    os.path.join(os.path.dirname(__file__),
+                 "nvidia-jetson-power-measuring-tool"))
 from jetsonpowerprofiler import jetsonpowerprofiler as powerprofiler
 
 use_gpio = True
@@ -28,7 +31,8 @@ for i in range(0, 10):
 
 print("Starting inference")
 
-power_measuring_thread = threading.Thread(target=powerprofiler.measure_continuous, args=())
+power_measuring_thread = threading.Thread(
+    target=powerprofiler.measure_continuous, args=())
 
 samples = 0
 total_time = 0.000
@@ -68,9 +72,11 @@ else:
         print("Avg Frame Time: ", round(total_time / samples, 5))
         print("Total samples processed: ", samples)
         print("Average framerate:", round(samples / total_time, 2))
-        print("Average power - software measured:", powerprofiler.get_average_power())
+        print("Average power - software measured:",
+              powerprofiler.get_average_power())
         powerprofiler.clean()
         del power_measuring_thread
-        power_measuring_thread = threading.Thread(target=powerprofiler.measure_continuous, args=())
+        power_measuring_thread = threading.Thread(
+            target=powerprofiler.measure_continuous, args=())
         samples = 0
         total_time = 0.000

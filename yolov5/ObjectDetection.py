@@ -1,10 +1,10 @@
 import sys
 from pathlib import Path
+
 sys.path.append(str(Path(__file__).parent.absolute()))
 import cv2
 import numpy as np
 import torch
-
 
 from models.experimental import attempt_load
 from utils.general import non_max_suppression
@@ -13,7 +13,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 class ObjectDetection:
-    def __init__(self, model_path, input_width=320, conf_threshold=0.25, iou_thres=0.45):
+
+    def __init__(self,
+                 model_path,
+                 input_width=320,
+                 conf_threshold=0.25,
+                 iou_thres=0.45):
         self.yolo_model = attempt_load(weights=model_path, map_location=device)
         self.input_width = input_width
         self.conf_threshold = conf_threshold
@@ -32,7 +37,10 @@ class ObjectDetection:
             img = img.unsqueeze(0)
 
         pred = self.yolo_model(img, augment=False)[0]
-        pred = non_max_suppression(pred, conf_thres=self.conf_threshold, iou_thres=self.iou_thres, classes=None)
+        pred = non_max_suppression(pred,
+                                   conf_thres=self.conf_threshold,
+                                   iou_thres=self.iou_thres,
+                                   classes=None)
         items = []
 
         if pred[0] is not None and len(pred):
@@ -45,10 +53,11 @@ class ObjectDetection:
                 xmax = int(p[2] * main_img.shape[1] / self.input_width)
                 ymax = int(p[3] * main_img.shape[0] / new_height)
 
-                item = {'label': label,
-                        'bbox': [(xmin, ymin), (xmax, ymax)],
-                        'score': score
-                        }
+                item = {
+                    'label': label,
+                    'bbox': [(xmin, ymin), (xmax, ymax)],
+                    'score': score
+                }
 
                 items.append(item)
 
@@ -64,7 +73,9 @@ if __name__ == "__main__":
         print("Error reading camera")
         exit(1)
     print("Loading weigths!")
-    Object_detector = ObjectDetection(str(Path(__file__).parent.absolute()) + '/weights/yolov5m.pt', input_width=640)
+    Object_detector = ObjectDetection(str(Path(__file__).parent.absolute()) +
+                                      '/weights/yolov5m.pt',
+                                      input_width=640)
     print("Starting inference")
 
     while True:
@@ -82,8 +93,10 @@ if __name__ == "__main__":
             label = obj['label']
             score = obj['score']
             [(xmin, ymin), (xmax, ymax)] = obj['bbox']
-            frame = cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), RED_COLOR, 2)
-            frame = cv2.putText(frame, f'{label} ({str(score)})', (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.75,
-                                RED_COLOR, 1, cv2.LINE_AA)
+            frame = cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), RED_COLOR,
+                                  2)
+            frame = cv2.putText(frame, f'{label} ({str(score)})', (xmin, ymin),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.75, RED_COLOR, 1,
+                                cv2.LINE_AA)
         cv2.imshow("Result", frame)
         cv2.waitKey(20)
