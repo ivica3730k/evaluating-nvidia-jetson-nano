@@ -14,8 +14,12 @@ from jetsonpowerprofiler import jetsonpowerprofiler as powerprofiler
 sys.path.append(os.path.join(os.path.dirname(__file__), "AzureVisionTools"))
 from AzureVisionTools import AzureObjectDetectionEngine as AzureObjectDetection
 
+# free tier
 ENDPOINT = "https://n0781349-cv.cognitiveservices.azure.com/"
 SUBSCRIPTION_KEY = "10e1d0d7661e495b8f2bc696f74a34fa"
+# Paid tier
+ENDPOINT = "https://n0781349-cv-paid.cognitiveservices.azure.com/"
+SUBSCRIPTION_KEY = "665384b591b348528c950d1a6fa0336e"
 AzureObjectDetection.load_credentials(ENDPOINT, SUBSCRIPTION_KEY)
 
 _use_gpio = True
