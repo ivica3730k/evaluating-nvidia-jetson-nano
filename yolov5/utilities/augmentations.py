@@ -5,8 +5,8 @@ import cv2
 import math
 import numpy as np
 import random
-from utils.general import LOGGER, check_version, colorstr, resample_segments, segment2box
-from utils.metrics import bbox_ioa
+from utilities.general import LOGGER, check_version, colorstr, resample_segments, segment2box
+from utilities.metrics import bbox_ioa
 
 
 class Albumentations:

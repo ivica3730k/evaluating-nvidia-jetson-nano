@@ -7,10 +7,10 @@ import torch
 import warnings
 from threading import Thread
 from torch.utils.tensorboard import SummaryWriter
-from utils.general import colorstr, emojis
-from utils.loggers.wandb.wandb_utils import WandbLogger
-from utils.plots import plot_images, plot_results
-from utils.torch_utils import de_parallel
+from utilities.general import colorstr, emojis
+from utilities.loggers.wandb.wandb_utils import WandbLogger
+from utilities.plots import plot_images, plot_results
+from utilities.torch_utils import de_parallel
 
 LOGGERS = ('csv', 'tb', 'wandb')  # text-file, TensorBoard, Weights & Biases
 RANK = int(os.getenv('RANK', -1))

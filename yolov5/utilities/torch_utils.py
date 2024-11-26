@@ -14,7 +14,7 @@ import torch.nn.functional as F
 from contextlib import contextmanager
 from copy import deepcopy
 from pathlib import Path
-from utils.general import LOGGER
+from utilities.general import LOGGER
 
 try:
     import thop  # for FLOPs computation

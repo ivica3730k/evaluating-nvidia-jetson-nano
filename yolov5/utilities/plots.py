@@ -13,10 +13,10 @@ import torch
 from PIL import Image, ImageDraw, ImageFont
 from copy import copy
 from pathlib import Path
-from utils.general import (LOGGER, Timeout, check_requirements, clip_coords,
+from utilities.general import (LOGGER, Timeout, check_requirements, clip_coords,
                            increment_path, is_ascii, is_chinese, try_except,
                            user_config_dir, xywh2xyxy, xyxy2xywh)
-from utils.metrics import fitness
+from utilities.metrics import fitness
 
 # Settings
 CONFIG_DIR = user_config_dir()  # Ultralytics settings dir

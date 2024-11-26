@@ -7,7 +7,7 @@ import numpy as np
 import torch
 
 from models.experimental import attempt_load
-from utils.general import non_max_suppression
+from utilities.general import non_max_suppression
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

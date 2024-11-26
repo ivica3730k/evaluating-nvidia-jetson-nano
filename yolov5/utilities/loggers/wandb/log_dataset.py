@@ -1,5 +1,5 @@
 import argparse
-from utils.general import LOGGER
+from utilities.general import LOGGER
 
 from wandb_utils import WandbLogger
 

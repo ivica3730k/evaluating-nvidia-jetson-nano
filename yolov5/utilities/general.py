@@ -24,8 +24,8 @@ from itertools import repeat
 from multiprocessing.pool import ThreadPool
 from pathlib import Path
 from subprocess import check_output
-from utils.downloads import gsutil_getsize
-from utils.metrics import box_iou, fitness
+from utilities.downloads import gsutil_getsize
+from utilities.metrics import box_iou, fitness
 from zipfile import ZipFile
 
 # Settings

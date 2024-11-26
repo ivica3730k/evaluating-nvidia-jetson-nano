@@ -4,8 +4,8 @@
 import torch
 import torch.nn as nn
 
-from utils.metrics import bbox_iou
-from utils.torch_utils import is_parallel
+from utilities.metrics import bbox_iou
+from utilities.torch_utils import is_parallel
 
 
 def smooth_BCE(

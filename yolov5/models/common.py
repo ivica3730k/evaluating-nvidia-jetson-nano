@@ -17,13 +17,13 @@ from collections import OrderedDict, namedtuple
 from copy import copy
 from pathlib import Path
 from torch.cuda import amp
-from utils.datasets import exif_transpose, letterbox
-from utils.general import (LOGGER, check_requirements, check_suffix,
+from utilities.datasets import exif_transpose, letterbox
+from utilities.general import (LOGGER, check_requirements, check_suffix,
                            check_version, colorstr, increment_path,
                            make_divisible, non_max_suppression, scale_coords,
                            xywh2xyxy, xyxy2xywh)
-from utils.plots import Annotator, colors, save_one_box
-from utils.torch_utils import copy_attr, time_sync
+from utilities.plots import Annotator, colors, save_one_box
+from utilities.torch_utils import copy_attr, time_sync
 
 
 def autopad(k, p=None):  # kernel, padding
